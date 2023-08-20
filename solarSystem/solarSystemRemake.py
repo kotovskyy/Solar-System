@@ -18,7 +18,7 @@ class SolarSystem:
         self.WIDTH = 900
         self.HEIGHT = 900
         self.FPS = 60
-        self.time_unit = 1/24 # day
+        self.time_unit = 5 # day
         self.SCALE = 1
         self.km_per_pixel = 204444.44
         self.WIN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -45,9 +45,9 @@ class SolarSystem:
 
     def zoom_handle(self, keys_pressed):
         if keys_pressed[pygame.K_UP]:
-            self.SCALE -= 0.01
+            self.SCALE -= 0.1
         if keys_pressed[pygame.K_DOWN]:
-            self.SCALE += 0.01
+            self.SCALE += 0.1
         print(f"SCALE : {self.SCALE}")
 
     def pygame_to_cartesian(self, coords):
@@ -77,7 +77,7 @@ class SolarSystem:
             window_coords = self.cartesian_to_pygame(window_coords)
             rect_w = 2*planet.semimajor/self.km_per_pixel
             rect_h = 2*planet.semiminor/self.km_per_pixel
-            orbit_rect = pygame.Rect((window_coords), (rect_w+planet.width/2, rect_h))
+            orbit_rect = pygame.Rect((window_coords), (rect_w, rect_h))
             pygame.draw.rect(self.WIN, COLORS['red'], orbit_rect, 4)
             pygame.draw.ellipse(self.WIN, COLORS['red'], orbit_rect, 2)
 
@@ -102,6 +102,7 @@ class SolarSystem:
         self.draw_orbits()
         for planet in self.PLANETS:
             self.WIN.blit(planet.planet, (self.WIDTH/2 - self.PLANETS_RECTS[planet.name].x - planet.width/2, self.HEIGHT/2 - self.PLANETS_RECTS[planet.name].y - planet.height/2))
+        pygame.draw.circle(self.WIN, COLORS["red"], (self.WIDTH/2, self.HEIGHT/2), 2, 2)
         pygame.display.update()
 
 class Planet:
